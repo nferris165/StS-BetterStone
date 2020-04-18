@@ -1,0 +1,14 @@
+{
+  "eventTweaks:Patches": {
+    "NAME": "Patches",
+    "DESCRIPTIONS": [
+      "You give in to the unnatural desire to eat. As you consume mushroom after mushroom, you feel yourself entering into a daze and pass out. As you awake, you feel very odd. NL You #gHeal #b25% of your HP, and #gGain #b10% Max HP, but you also get #rinfected.",
+      ""
+    ],
+    "OPTIONS": [
+      "[Eat] #gHeal #g",
+      " #gHP. #gGain #g",
+      " #gMax #gHP. #rBecome #rCursed #r- #rParasite."
+    ]
+  }
+}
