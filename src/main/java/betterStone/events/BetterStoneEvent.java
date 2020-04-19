@@ -47,6 +47,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
     private AbstractCard card;
     private int choice, actNum;
     private String memory;
+    private boolean pickCard;
     private ArrayList<AbstractCard> cards;
 
 
@@ -58,7 +59,8 @@ public class BetterStoneEvent extends AbstractImageEvent {
         this.noCardsInRewards = true;
         classCard();
         this.choice = Math.min(this.actNum, 3);
-        cards = new ArrayList<>();
+        this.cards = new ArrayList<>();
+        this.pickCard = false;
         this.imageEventText.setDialogOption(OPTIONS[6]);
     }
 
@@ -114,7 +116,6 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         this.cards.add(card);
                     }
                 }
-                //BetterStone.logger.info(run.master_deck + "" + this.cards + "\n");
                 break;
             }
         }
@@ -177,7 +178,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                 testRuns();
                 break;
             case INTRO_2:
-                this.getRandomMemory();
+                this.imageEventText.updateBodyText(memory);
                 switch(buttonPressed) {
                     case 0:
                         this.reward(choice);
@@ -190,6 +191,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         break;
                     case 2:
                         this.screen = CurScreen.ACCEPT;
+                        this.pickCard = true;
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                 }
 
@@ -203,10 +205,6 @@ public class BetterStoneEvent extends AbstractImageEvent {
         }
     }
 
-    private void getRandomMemory() {
-        this.imageEventText.updateBodyText(memory);
-    }
-
     private void reward(int num) {
         AbstractDungeon.getCurrRoom().rewards.clear();
 
@@ -217,6 +215,16 @@ public class BetterStoneEvent extends AbstractImageEvent {
         AbstractDungeon.getCurrRoom().phase = AbstractRoom.RoomPhase.COMPLETE;
         AbstractDungeon.combatRewardScreen.open();
         this.screen = CurScreen.LEAVE;
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        if (this.pickCard && !AbstractDungeon.isScreenUp && !AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
+            AbstractCard c = (AbstractDungeon.gridSelectScreen.selectedCards.get(0)).makeCopy();
+            AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(c, (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
+            AbstractDungeon.gridSelectScreen.selectedCards.clear();
+        }
     }
 
     static {
