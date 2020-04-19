@@ -58,6 +58,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
         this.noCardsInRewards = true;
         classCard();
         this.choice = Math.min(this.actNum, 3);
+        cards = new ArrayList<>();
         this.imageEventText.setDialogOption(OPTIONS[6]);
     }
 
@@ -102,10 +103,9 @@ public class BetterStoneEvent extends AbstractImageEvent {
 
     private void testRuns(){
         CardCrawlGame.mainMenuScreen.runHistoryScreen.refreshData();
-        ArrayList<RunData> x = (ArrayList<RunData>) ReflectionHacks.getPrivate(
+        ArrayList<RunData> runList = (ArrayList<RunData>) ReflectionHacks.getPrivate(
                 CardCrawlGame.mainMenuScreen.runHistoryScreen, RunHistoryScreen.class, "unfilteredRuns");
-        //BetterStone.logger.info(x + "\n\n");
-        for(RunData run: x){
+        for(RunData run: runList){
             if(run.character_chosen.equals(AbstractDungeon.player.chosenClass.name())){
                 for(String id: run.master_deck){
                     AbstractCard card;
@@ -114,7 +114,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         this.cards.add(card);
                     }
                 }
-                BetterStone.logger.info(run.master_deck + "\n");
+                //BetterStone.logger.info(run.master_deck + "" + this.cards + "\n");
                 break;
             }
         }
