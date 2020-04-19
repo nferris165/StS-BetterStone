@@ -103,7 +103,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
         }
     }
 
-    private void testRuns(){
+    private void getRunInfo(){
         CardCrawlGame.mainMenuScreen.runHistoryScreen.refreshData();
         ArrayList<RunData> runList = (ArrayList<RunData>) ReflectionHacks.getPrivate(
                 CardCrawlGame.mainMenuScreen.runHistoryScreen, RunHistoryScreen.class, "unfilteredRuns");
@@ -118,6 +118,11 @@ public class BetterStoneEvent extends AbstractImageEvent {
                 }
                 break;
             }
+        }
+
+        //If no previous run, obtain curse
+        if(this.cards.isEmpty()){
+            this.cards.add(AbstractDungeon.returnRandomCurse());
         }
     }
 
@@ -174,8 +179,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                     this.imageEventText.setDialogOption(OPTIONS[7], true);
                 }
                 this.screen = CurScreen.INTRO_2;
-                //TODO
-                testRuns();
+                getRunInfo();
                 break;
             case INTRO_2:
                 this.imageEventText.updateBodyText(memory);
@@ -192,6 +196,11 @@ public class BetterStoneEvent extends AbstractImageEvent {
                     case 2:
                         this.screen = CurScreen.ACCEPT;
                         this.pickCard = true;
+                        CardGroup group = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
+                        for(AbstractCard card: cards){
+                            group.addToTop(card);
+                        }
+                        AbstractDungeon.gridSelectScreen.open(group, 1, OPTIONS[8], false);
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                 }
 
