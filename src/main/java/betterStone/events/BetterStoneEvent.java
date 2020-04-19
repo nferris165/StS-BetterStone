@@ -1,7 +1,9 @@
 package betterStone.events;
 
+import basemod.ReflectionHacks;
 import betterStone.BetterStone;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.cards.blue.EchoForm;
 import com.megacrit.cardcrawl.cards.colorless.Madness;
@@ -17,11 +19,12 @@ import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
+import com.megacrit.cardcrawl.screens.runHistory.RunHistoryScreen;
+import com.megacrit.cardcrawl.screens.runHistory.TinyCard;
+import com.megacrit.cardcrawl.screens.stats.RunData;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
 
 public class BetterStoneEvent extends AbstractImageEvent {
@@ -44,6 +47,8 @@ public class BetterStoneEvent extends AbstractImageEvent {
     private AbstractCard card;
     private int choice, actNum;
     private String memory;
+    private ArrayList<AbstractCard> cards;
+
 
     public BetterStoneEvent() {
         super(NAME, DESCRIPTIONS[0], IMG);
@@ -95,6 +100,66 @@ public class BetterStoneEvent extends AbstractImageEvent {
         }
     }
 
+    private void testRuns(){
+        CardCrawlGame.mainMenuScreen.runHistoryScreen.refreshData();
+        ArrayList<RunData> x = (ArrayList<RunData>) ReflectionHacks.getPrivate(
+                CardCrawlGame.mainMenuScreen.runHistoryScreen, RunHistoryScreen.class, "unfilteredRuns");
+        //BetterStone.logger.info(x + "\n\n");
+        for(RunData run: x){
+            if(run.character_chosen.equals(AbstractDungeon.player.chosenClass.name())){
+                reloadCards(run);
+                BetterStone.logger.info(run.master_deck + "\n");
+                break;
+            }
+        }
+    }
+
+    private AbstractCard cardForName(RunData runData, String cardID) {
+        String libraryLookupName = cardID;
+        if (cardID.endsWith("+")) {
+            libraryLookupName = cardID.substring(0, cardID.length() - 1);
+        }
+
+        if (libraryLookupName.equals("Defend") || libraryLookupName.equals("Strike")) {
+            libraryLookupName = libraryLookupName + CardCrawlGame.mainMenuScreen.runHistoryScreen.baseCardSuffixForCharacter(runData.character_chosen);
+        }
+
+        AbstractCard card = CardLibrary.getCard(libraryLookupName);
+        int upgrades = 0;
+        if (card != null) {
+            if (cardID.endsWith("+")) {
+                upgrades = 1;
+            }
+        } else if (libraryLookupName.contains("+")) {
+            String[] split = libraryLookupName.split("\\+", -1);
+            libraryLookupName = split[0];
+            upgrades = Integer.parseInt(split[1]);
+            card = CardLibrary.getCard(libraryLookupName);
+        }
+
+        if (card == null) {
+            BetterStone.logger.info("Could not find card named: " + cardID);
+            return null;
+        } else {
+            card = card.makeCopy();
+
+            for(int i = 0; i < upgrades; ++i) {
+                card.upgrade();
+            }
+            return card;
+        }
+    }
+
+    private void reloadCards(RunData runData) {
+        for(String id: runData.master_deck){
+            AbstractCard card;
+            card = this.cardForName(runData, id);
+            if (card != null) {
+                this.cards.add(card);
+            }
+        }
+    }
+
     protected void buttonEffect(int buttonPressed) {
         switch(this.screen) {
             case INTRO:
@@ -112,6 +177,8 @@ public class BetterStoneEvent extends AbstractImageEvent {
                     this.imageEventText.setDialogOption(OPTIONS[7], true);
                 }
                 this.screen = CurScreen.INTRO_2;
+                //TODO
+                testRuns();
                 break;
             case INTRO_2:
                 this.getRandomMemory();
