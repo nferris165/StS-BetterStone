@@ -107,21 +107,27 @@ public class BetterStoneEvent extends AbstractImageEvent {
         //BetterStone.logger.info(x + "\n\n");
         for(RunData run: x){
             if(run.character_chosen.equals(AbstractDungeon.player.chosenClass.name())){
-                reloadCards(run);
+                for(String id: run.master_deck){
+                    AbstractCard card;
+                    card = this.cardForName(run.character_chosen, id);
+                    if (card != null) {
+                        this.cards.add(card);
+                    }
+                }
                 BetterStone.logger.info(run.master_deck + "\n");
                 break;
             }
         }
     }
 
-    private AbstractCard cardForName(RunData runData, String cardID) {
+    private AbstractCard cardForName(String charClass, String cardID) {
         String libraryLookupName = cardID;
         if (cardID.endsWith("+")) {
             libraryLookupName = cardID.substring(0, cardID.length() - 1);
         }
 
         if (libraryLookupName.equals("Defend") || libraryLookupName.equals("Strike")) {
-            libraryLookupName = libraryLookupName + CardCrawlGame.mainMenuScreen.runHistoryScreen.baseCardSuffixForCharacter(runData.character_chosen);
+            libraryLookupName = libraryLookupName + CardCrawlGame.mainMenuScreen.runHistoryScreen.baseCardSuffixForCharacter(charClass);
         }
 
         AbstractCard card = CardLibrary.getCard(libraryLookupName);
@@ -147,16 +153,6 @@ public class BetterStoneEvent extends AbstractImageEvent {
                 card.upgrade();
             }
             return card;
-        }
-    }
-
-    private void reloadCards(RunData runData) {
-        for(String id: runData.master_deck){
-            AbstractCard card;
-            card = this.cardForName(runData, id);
-            if (card != null) {
-                this.cards.add(card);
-            }
         }
     }
 
