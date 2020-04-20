@@ -126,9 +126,9 @@ public class BetterStoneEvent extends AbstractImageEvent {
             }
         }
 
-        //If no previous run, obtain curse
+        //If no previous run, obtain Madness
         if(this.cards.isEmpty()){
-            this.cards.add(AbstractDungeon.returnRandomCurse());
+            this.cards.add(new Madness());
         }
     }
 
@@ -250,9 +250,11 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 3:
+                        this.screen = CurScreen.ACCEPT;
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(obtainCard,
                                 (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
                         this.remCard = true;
+                        this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                 }
 
