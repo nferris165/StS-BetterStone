@@ -7,10 +7,10 @@ import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.cards.blue.EchoForm;
 import com.megacrit.cardcrawl.cards.colorless.Madness;
+import com.megacrit.cardcrawl.cards.curses.Doubt;
 import com.megacrit.cardcrawl.cards.green.WraithForm;
 import com.megacrit.cardcrawl.cards.purple.DevaForm;
 import com.megacrit.cardcrawl.cards.red.DemonForm;
-import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -20,7 +20,6 @@ import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.screens.runHistory.RunHistoryScreen;
-import com.megacrit.cardcrawl.screens.runHistory.TinyCard;
 import com.megacrit.cardcrawl.screens.stats.RunData;
 import com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect;
 
@@ -43,6 +42,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
     private static final String MEMORY_3_TEXT;
     private static final String MEMORY_4_TEXT;
     private static final String MEMORY_DEF_TEXT;
+    private static int healthLoss;
     private CurScreen screen;
     private AbstractCard card;
     private int choice, actNum;
@@ -62,6 +62,10 @@ public class BetterStoneEvent extends AbstractImageEvent {
         this.cards = new ArrayList<>();
         this.pickCard = false;
         this.imageEventText.setDialogOption(OPTIONS[6]);
+
+        if(AbstractDungeon.ascensionLevel >= 15){
+            healthLoss = 15;
+        }
     }
 
     public void onEnterRoom() {
@@ -168,11 +172,13 @@ public class BetterStoneEvent extends AbstractImageEvent {
                 this.imageEventText.updateBodyText(INTRO_TEXT_2);
                 this.imageEventText.updateDialogOption(0, OPTIONS[0] + choice + OPTIONS[1]);
                 if(actNum == 2) {
-                    this.imageEventText.setDialogOption(OPTIONS[2] + card.name + OPTIONS[3], CardLibrary.getCopy(card.cardID));
+                    this.imageEventText.setDialogOption(OPTIONS[2] + card.name + OPTIONS[3]
+                            + healthLoss + OPTIONS[9], CardLibrary.getCopy(card.cardID));
                     this.imageEventText.setDialogOption(OPTIONS[7], true);
                 } else if(actNum == 3){
-                    this.imageEventText.setDialogOption(OPTIONS[2] + card.name + OPTIONS[3], CardLibrary.getCopy(card.cardID));
-                    this.imageEventText.setDialogOption(OPTIONS[4]);
+                    this.imageEventText.setDialogOption(OPTIONS[2] + card.name + OPTIONS[3]
+                            + healthLoss + OPTIONS[9], CardLibrary.getCopy(card.cardID));
+                    this.imageEventText.setDialogOption(OPTIONS[4], CardLibrary.getCopy(Doubt.ID));
 
                 } else{
                     this.imageEventText.setDialogOption(OPTIONS[7], true);
@@ -192,7 +198,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         this.screen = CurScreen.ACCEPT;
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.card, (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
                         //TODO finalize cost
-                        AbstractDungeon.player.damage(new DamageInfo(AbstractDungeon.player, 10, DamageInfo.DamageType.HP_LOSS));
+                        AbstractDungeon.player.damage(new DamageInfo(AbstractDungeon.player, healthLoss, DamageInfo.DamageType.HP_LOSS));
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 2:
@@ -204,7 +210,9 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         }
                         AbstractDungeon.gridSelectScreen.open(group, 1, OPTIONS[8], false);
                         //TODO finalize cost
-                        AbstractDungeon.player.damage(new DamageInfo(AbstractDungeon.player, 10, DamageInfo.DamageType.HP_LOSS));
+                        //AbstractDungeon.player.damage(new DamageInfo(AbstractDungeon.player, 10, DamageInfo.DamageType.HP_LOSS));
+                        AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(new Doubt(),
+                                (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                 }
 
@@ -247,6 +255,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
         MEMORY_3_TEXT = DESCRIPTIONS[4];
         MEMORY_4_TEXT = DESCRIPTIONS[5];
         MEMORY_DEF_TEXT = DESCRIPTIONS[6];
+        healthLoss = 10;
     }
 
     private enum CurScreen {
