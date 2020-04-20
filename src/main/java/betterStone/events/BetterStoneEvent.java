@@ -191,6 +191,8 @@ public class BetterStoneEvent extends AbstractImageEvent {
                     case 1:
                         this.screen = CurScreen.ACCEPT;
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.card, (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
+                        //TODO finalize cost
+                        AbstractDungeon.player.damage(new DamageInfo(AbstractDungeon.player, 10, DamageInfo.DamageType.HP_LOSS));
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 2:
@@ -201,6 +203,8 @@ public class BetterStoneEvent extends AbstractImageEvent {
                             group.addToTop(card);
                         }
                         AbstractDungeon.gridSelectScreen.open(group, 1, OPTIONS[8], false);
+                        //TODO finalize cost
+                        AbstractDungeon.player.damage(new DamageInfo(AbstractDungeon.player, 10, DamageInfo.DamageType.HP_LOSS));
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                 }
 
