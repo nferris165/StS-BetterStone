@@ -8,6 +8,7 @@ import betterStone.events.BetterStoneEvent;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.evacipated.cardcrawl.mod.stslib.Keyword;
+import com.evacipated.cardcrawl.modthespire.Loader;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
@@ -44,6 +45,8 @@ public class BetterStone implements
     public static Properties defaultSettings = new Properties();
     public static final String ascension_limit_settings = "ascensionLimit";
     public static boolean ascLimit = false;
+
+    public static final boolean hasBetterNote;
 
     private static final String MODNAME = "Better Stone";
     private static final String AUTHOR = "Nichilas";
@@ -105,6 +108,14 @@ public class BetterStone implements
             ascLimit = config.getBool(ascension_limit_settings);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    static
+    {
+        hasBetterNote = Loader.isModLoaded("betterNote");
+        if (hasBetterNote) {
+            logger.info("Detected Better Note");
         }
     }
 

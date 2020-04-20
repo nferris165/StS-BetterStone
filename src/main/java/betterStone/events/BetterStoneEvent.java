@@ -6,7 +6,9 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.cards.blue.EchoForm;
+import com.megacrit.cardcrawl.cards.blue.GeneticAlgorithm;
 import com.megacrit.cardcrawl.cards.colorless.Madness;
+import com.megacrit.cardcrawl.cards.colorless.RitualDagger;
 import com.megacrit.cardcrawl.cards.curses.Doubt;
 import com.megacrit.cardcrawl.cards.green.WraithForm;
 import com.megacrit.cardcrawl.cards.purple.DevaForm;
@@ -44,12 +46,12 @@ public class BetterStoneEvent extends AbstractImageEvent {
     private static final String MEMORY_DEF_TEXT;
     private static int healthLoss;
     private CurScreen screen;
-    private AbstractCard card;
+    private AbstractCard card, obtainCard = null;
     private int choice, actNum;
     private String memory;
     private boolean pickCard;
     private ArrayList<AbstractCard> cards;
-
+    public boolean remCard = false;
 
     public BetterStoneEvent() {
         super(NAME, DESCRIPTIONS[0], IMG);
@@ -166,6 +168,29 @@ public class BetterStoneEvent extends AbstractImageEvent {
         }
     }
 
+    private void initializeObtainCard() {
+        this.obtainCard = CardLibrary.getCard(CardCrawlGame.playerPref.getString("NOTE_CARD", "None"));
+        if (this.obtainCard == null) {
+            return;
+        }
+
+        this.obtainCard = this.obtainCard.makeCopy();
+
+        for(int i = 0; i < CardCrawlGame.playerPref.getInteger("NOTE_UPGRADE", 0); ++i) {
+            this.obtainCard.upgrade();
+        }
+
+        this.obtainCard.misc = CardCrawlGame.playerPref.getInteger("NOTE_MISC", 0);
+        if(this.obtainCard instanceof RitualDagger){
+            this.obtainCard.applyPowers();
+            this.obtainCard.baseDamage = this.obtainCard.misc;
+            this.obtainCard.isDamageModified = false;
+        } else if(this.obtainCard instanceof GeneticAlgorithm){
+            this.obtainCard.applyPowers();
+            this.obtainCard.isBlockModified = false;
+        }
+    }
+
     protected void buttonEffect(int buttonPressed) {
         switch(this.screen) {
             case INTRO:
@@ -183,6 +208,15 @@ public class BetterStoneEvent extends AbstractImageEvent {
                 } else{
                     this.imageEventText.setDialogOption(OPTIONS[7], true);
                     this.imageEventText.setDialogOption(OPTIONS[7], true);
+                }
+                if(BetterStone.hasBetterNote){
+                    initializeObtainCard();
+                    if(obtainCard != null) {
+                        this.imageEventText.setDialogOption("[Recall Note] #gAdd " + obtainCard.name + " #gto #gyour #gdeck.", obtainCard);
+                    }
+                    else{
+                        this.imageEventText.setDialogOption(OPTIONS[10], true);
+                    }
                 }
                 this.screen = CurScreen.INTRO_2;
                 getRunInfo();
@@ -214,6 +248,12 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(new Doubt(),
                                 (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
+                        break;
+                    case 3:
+                        AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(obtainCard,
+                                (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
+                        this.remCard = true;
+                        break;
                 }
 
                 this.imageEventText.clearRemainingOptions();

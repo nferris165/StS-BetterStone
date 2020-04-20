@@ -49,6 +49,13 @@
             <scope>system</scope>
             <systemPath>${Steam.path}/workshop/content/646570/1609158507/StSLib.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>betterNote</groupId>
+            <artifactId>betterNote</artifactId>
+            <version>1.0.2</version>
+            <scope>system</scope>
+            <systemPath>${Steam.path}/workshop/content/646570/2051198118/BetterNote.jar</systemPath>
+        </dependency>
     </dependencies>
 
 

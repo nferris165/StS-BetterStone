@@ -20,7 +20,8 @@
       "[Interact]",
       "[Locked] Requires a later Act.",
       "Select a Card to Recall.",
-      " #rHP."
+      " #rHP.",
+      "[Locked] Requires: Stored Card."
     ]
   }
 }
