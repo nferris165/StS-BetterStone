@@ -128,7 +128,9 @@ public class BetterStoneEvent extends AbstractImageEvent {
 
         //If no previous run, obtain Madness
         if(this.cards.isEmpty()){
-            this.cards.add(new Madness());
+            for(int i = 0; i < 20; i++){
+                this.cards.add(new Madness());
+            }
         }
     }
 
@@ -236,6 +238,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 2:
+                        this.imageEventText.updateBodyText(DESCRIPTIONS[7]);
                         this.screen = CurScreen.ACCEPT;
                         this.pickCard = true;
                         CardGroup group = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
@@ -250,6 +253,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 3:
+                        this.imageEventText.updateBodyText(DESCRIPTIONS[8]);
                         this.screen = CurScreen.ACCEPT;
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(obtainCard,
                                 (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));

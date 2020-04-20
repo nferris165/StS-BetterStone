@@ -8,7 +8,9 @@
       "#g~TRIUMPH.~ NL NL The remains of a #p~ghostly~ #p~creature~ sink slowly into the mud before you, barely visible in the moonlight. You have proven yourself amongst your sisters. NL NL Standing victoriously, you wait in silence as the others ceremoniously place the #ycreature's #yskull atop your head. The ritual has concluded. NL NL You head towards the Spire...",
       "#b~CONFUSION.~ NL NL #y[OBJECTIVE] #gBALANCE #gmust #gbe #gENFORCED NL #y[DEFINE] #gBALANCE NL #y[ERROR] #gBALANCE #gNOT #gFOUND NL #y[DEFINE] #gBALANCE NL #y[ERROR] #gBALANCE #gNOT #gFOUND NL #y[WARNING] #rLarge #robject #rapproaching NL NL ~\"I...~ ~..am~ ~....Neow..\"~",
       "#p~SERENITY.~ NL NL Two primitive creatures fight over a carcass on the side of the road. You observe, devoid of emotion. NL #yWatch. #yRemember. #yLive. This is the Watcher's mission. NL NL Recently, one of your peers had stopped reporting on their assignment: a Spire of unknown origin. NL NL As the fight ends, you continue onward, unfazed by the bloody scene that took place.",
-      "#~MYSTERY.~"
+      "#~MYSTERY.~",
+      "History text",
+      "You are walking down a hallway shrouded in shadow. You spot a loose brick within a pillar that catches your eye. You find a folded note and -- NL Your vision goes black... NL You find yourself in a room. The walls are scrawled with writing. NL This is your handwriting. NL NL What is going on?"
     ],
     "OPTIONS": [
       "[Recall Visions] #gAdd #g",
