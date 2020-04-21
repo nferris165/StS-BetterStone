@@ -44,7 +44,9 @@ public class BetterStone implements
     //mod settings
     public static Properties defaultSettings = new Properties();
     public static final String ascension_limit_settings = "ascensionLimit";
-    public static boolean ascLimit = false;
+    public static final String act_limit_settings = "actLimit";
+    public static boolean disableAscLimit = false;
+    public static boolean actLimit = false;
 
     public static final boolean hasBetterNote;
 
@@ -102,10 +104,12 @@ public class BetterStone implements
 
         logger.info("Adding mod settings");
         defaultSettings.setProperty(ascension_limit_settings, "FALSE");
+        defaultSettings.setProperty(act_limit_settings, "FALSE");
         try {
             SpireConfig config = new SpireConfig("betterStone", "betterStoneConfig", defaultSettings);
             config.load();
-            ascLimit = config.getBool(ascension_limit_settings);
+            disableAscLimit = config.getBool(ascension_limit_settings);
+            actLimit = config.getBool(act_limit_settings);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -191,25 +195,42 @@ public class BetterStone implements
         Texture badgeTexture = TextureLoader.getTexture(BADGE_IMAGE);
         ModPanel settingsPanel = new ModPanel();
 
-        //TODO config
-        ModLabeledToggleButton enableEventsButton = new ModLabeledToggleButton("Enables Better Stone event for all ascension levels.",
+        ModLabeledToggleButton ascLimitButton = new ModLabeledToggleButton("Enables Better Note interaction for all ascension levels.",
                 350.0f, 750.0f, Settings.CREAM_COLOR, FontHelper.charDescFont,
-                ascLimit,
+                disableAscLimit,
                 settingsPanel,
                 (label) -> {},
                 (button) -> {
 
-                    ascLimit = button.enabled;
+                    disableAscLimit = button.enabled;
                     try {
                         SpireConfig config = new SpireConfig("betterStone", "betterStoneConfig", defaultSettings);
-                        config.setBool(ascension_limit_settings, ascLimit);
+                        config.setBool(ascension_limit_settings, disableAscLimit);
                         config.save();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
 
-        settingsPanel.addUIElement(enableEventsButton);
+        ModLabeledToggleButton actLimitButton = new ModLabeledToggleButton("Limits Better Stone event to Act 3.",
+                350.0f, 700.0f, Settings.CREAM_COLOR, FontHelper.charDescFont,
+                actLimit,
+                settingsPanel,
+                (label) -> {},
+                (button) -> {
+
+                    actLimit = button.enabled;
+                    try {
+                        SpireConfig config = new SpireConfig("betterStone", "betterStoneConfig", defaultSettings);
+                        config.setBool(act_limit_settings, actLimit);
+                        config.save();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        settingsPanel.addUIElement(ascLimitButton);
+        settingsPanel.addUIElement(actLimitButton);
         BaseMod.registerModBadge(badgeTexture, MODNAME, AUTHOR, DESCRIPTION, settingsPanel);
 
         //events

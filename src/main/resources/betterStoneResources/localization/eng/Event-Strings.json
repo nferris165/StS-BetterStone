@@ -17,13 +17,15 @@
       " #gColorless #gcards #gto #gyour #gdeck.",
       "[Recall Potential] #gAdd ",
       " #gto #gyour #gdeck. #rLose #r",
-      "[Recall History] #gAdd #ga #gcard #gfrom #ga #yPrevious #yAdventurer. #rCursed #r- #rDoubt.",
+      "[Recall History] #gAdd #ga #gcard #gfrom #ga #yPrevious #yAdventurer. #rCursed #r- #rAscension.",
       "[Leave]",
       "[Interact]",
       "[Locked] Requires a later Act.",
       "Select a Card to Recall.",
       " #rHP.",
-      "[Locked] Requires: Stored Card."
+      "[Locked] Requires: Stored Card.",
+      "[Recall Note] #gAdd ",
+      " #gto #gyour #gdeck."
     ]
   }
 }

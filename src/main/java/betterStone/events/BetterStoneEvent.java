@@ -212,10 +212,10 @@ public class BetterStoneEvent extends AbstractImageEvent {
                     this.imageEventText.setDialogOption(OPTIONS[7], true);
                     this.imageEventText.setDialogOption(OPTIONS[7], true);
                 }
-                if(BetterStone.hasBetterNote){
+                if(BetterStone.hasBetterNote && (AbstractDungeon.ascensionLevel < 15 || BetterStone.disableAscLimit)){
                     initializeObtainCard();
                     if(obtainCard != null) {
-                        this.imageEventText.setDialogOption("[Recall Note] #gAdd " + obtainCard.name + " #gto #gyour #gdeck.", obtainCard);
+                        this.imageEventText.setDialogOption(OPTIONS[11] + obtainCard.name + OPTIONS[12], obtainCard);
                     }
                     else{
                         this.imageEventText.setDialogOption(OPTIONS[10], true);
