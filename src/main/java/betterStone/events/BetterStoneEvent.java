@@ -100,14 +100,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
             default:
                 card = new Madness();
                 card.upgrade();
-                //memory = MEMORY_DEF_TEXT;
-                ArrayList<String> memories = new ArrayList<>();
-                memories.add(MEMORY_1_TEXT);
-                memories.add(MEMORY_2_TEXT);
-                memories.add(MEMORY_3_TEXT);
-                memories.add(MEMORY_4_TEXT);
-                Collections.shuffle(memories, new Random(AbstractDungeon.miscRng.randomLong()));
-                memory = memories.get(0);
+                memory = MEMORY_DEF_TEXT;
                 break;
         }
     }
@@ -227,6 +220,8 @@ public class BetterStoneEvent extends AbstractImageEvent {
                 getRunInfo();
                 break;
             case INTRO_2:
+                memory = MEMORY_DEF_TEXT;
+
                 this.imageEventText.updateBodyText(memory);
                 switch(buttonPressed) {
                     case 0:
