@@ -232,13 +232,13 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 1:
+                        this.imageEventText.updateBodyText(memory);
                         this.screen = CurScreen.ACCEPT;
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.card, (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
                         AbstractDungeon.player.damage(new DamageInfo(AbstractDungeon.player, healthLoss, DamageInfo.DamageType.HP_LOSS));
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 2:
-                        this.imageEventText.updateBodyText(memory);
                         this.imageEventText.updateBodyText(DESCRIPTIONS[7]);
                         this.screen = CurScreen.ACCEPT;
                         this.pickCard = true;

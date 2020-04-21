@@ -191,6 +191,7 @@ public class BetterStone implements
         Texture badgeTexture = TextureLoader.getTexture(BADGE_IMAGE);
         ModPanel settingsPanel = new ModPanel();
 
+        //TODO config
         ModLabeledToggleButton enableEventsButton = new ModLabeledToggleButton("Enables Better Stone event for all ascension levels.",
                 350.0f, 750.0f, Settings.CREAM_COLOR, FontHelper.charDescFont,
                 ascLimit,
