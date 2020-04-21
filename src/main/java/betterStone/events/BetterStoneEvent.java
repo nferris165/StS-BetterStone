@@ -48,7 +48,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
     private CurScreen screen;
     private AbstractCard card, obtainCard = null;
     private int choice, actNum;
-    private String memory;
+    private String memory, randMem;
     private boolean pickCard;
     private ArrayList<AbstractCard> cards;
     public boolean remCard = false;
@@ -84,23 +84,28 @@ public class BetterStoneEvent extends AbstractImageEvent {
             case IRONCLAD:
                 card = new DemonForm();
                 memory = MEMORY_1_TEXT;
+                getRandomMemory(1);
                 break;
             case THE_SILENT:
                 card = new WraithForm();
                 memory = MEMORY_2_TEXT;
+                getRandomMemory(2);
                 break;
             case DEFECT:
                 card = new EchoForm();
                 memory = MEMORY_3_TEXT;
+                getRandomMemory(3);
                 break;
             case WATCHER:
                 card = new DevaForm();
                 memory = MEMORY_4_TEXT;
+                getRandomMemory(4);
                 break;
             default:
                 card = new Madness();
                 card.upgrade();
                 memory = MEMORY_DEF_TEXT;
+                getRandomMemory(0);
                 break;
         }
     }
@@ -220,9 +225,9 @@ public class BetterStoneEvent extends AbstractImageEvent {
                 getRunInfo();
                 break;
             case INTRO_2:
-                this.imageEventText.updateBodyText(memory);
                 switch(buttonPressed) {
                     case 0:
+                        this.imageEventText.updateBodyText(randMem);
                         this.reward(choice);
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
@@ -233,6 +238,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 2:
+                        this.imageEventText.updateBodyText(memory);
                         this.imageEventText.updateBodyText(DESCRIPTIONS[7]);
                         this.screen = CurScreen.ACCEPT;
                         this.pickCard = true;
@@ -275,6 +281,28 @@ public class BetterStoneEvent extends AbstractImageEvent {
         AbstractDungeon.getCurrRoom().phase = AbstractRoom.RoomPhase.COMPLETE;
         AbstractDungeon.combatRewardScreen.open();
         this.screen = CurScreen.LEAVE;
+    }
+
+    private void getRandomMemory(int avoid) {
+        ArrayList<String> memories = new ArrayList<>();
+        if(avoid != 1){
+            memories.add(MEMORY_1_TEXT);
+
+        }
+        if(avoid != 2){
+            memories.add(MEMORY_2_TEXT);
+
+        }
+        if(avoid != 3){
+            memories.add(MEMORY_3_TEXT);
+
+        }
+        if(avoid != 4){
+            memories.add(MEMORY_4_TEXT);
+
+        }
+        Collections.shuffle(memories, new Random(AbstractDungeon.miscRng.randomLong()));
+        this.randMem = memories.get(0);
     }
 
     @Override
