@@ -60,13 +60,16 @@ public class BetterStoneEvent extends AbstractImageEvent {
         this.actNum = AbstractDungeon.actNum;
         this.noCardsInRewards = true;
         classCard();
-        this.choice = Math.min(this.actNum, 3);
+        this.choice = Math.min(this.actNum, 2);
         this.cards = new ArrayList<>();
         this.pickCard = false;
         this.imageEventText.setDialogOption(OPTIONS[6]);
 
         if(AbstractDungeon.ascensionLevel >= 15){
-            healthLoss = 15;
+            healthLoss = (int) (0.2F * AbstractDungeon.player.maxHealth);
+        }
+        else{
+            healthLoss = (int) (0.15F * AbstractDungeon.player.maxHealth);
         }
     }
 
@@ -233,7 +236,6 @@ public class BetterStoneEvent extends AbstractImageEvent {
                     case 1:
                         this.screen = CurScreen.ACCEPT;
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.card, (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
-                        //TODO finalize cost
                         AbstractDungeon.player.damage(new DamageInfo(AbstractDungeon.player, healthLoss, DamageInfo.DamageType.HP_LOSS));
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
@@ -246,8 +248,6 @@ public class BetterStoneEvent extends AbstractImageEvent {
                             group.addToTop(card);
                         }
                         AbstractDungeon.gridSelectScreen.open(group, 1, OPTIONS[8], false);
-                        //TODO finalize cost
-                        //AbstractDungeon.player.damage(new DamageInfo(AbstractDungeon.player, 10, DamageInfo.DamageType.HP_LOSS));
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(new Doubt(),
                                 (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
@@ -301,7 +301,6 @@ public class BetterStoneEvent extends AbstractImageEvent {
         MEMORY_3_TEXT = DESCRIPTIONS[4];
         MEMORY_4_TEXT = DESCRIPTIONS[5];
         MEMORY_DEF_TEXT = DESCRIPTIONS[6];
-        healthLoss = 10;
     }
 
     private enum CurScreen {
