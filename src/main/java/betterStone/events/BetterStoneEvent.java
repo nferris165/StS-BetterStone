@@ -9,7 +9,7 @@ import com.megacrit.cardcrawl.cards.blue.EchoForm;
 import com.megacrit.cardcrawl.cards.blue.GeneticAlgorithm;
 import com.megacrit.cardcrawl.cards.colorless.Madness;
 import com.megacrit.cardcrawl.cards.colorless.RitualDagger;
-import com.megacrit.cardcrawl.cards.curses.Doubt;
+import com.megacrit.cardcrawl.cards.curses.AscendersBane;
 import com.megacrit.cardcrawl.cards.green.WraithForm;
 import com.megacrit.cardcrawl.cards.purple.DevaForm;
 import com.megacrit.cardcrawl.cards.red.DemonForm;
@@ -201,7 +201,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                 } else if(actNum == 3){
                     this.imageEventText.setDialogOption(OPTIONS[2] + card.name + OPTIONS[3]
                             + healthLoss + OPTIONS[9], CardLibrary.getCopy(card.cardID));
-                    this.imageEventText.setDialogOption(OPTIONS[4], CardLibrary.getCopy(Doubt.ID));
+                    this.imageEventText.setDialogOption(OPTIONS[4], CardLibrary.getCopy(AscendersBane.ID));
 
                 } else{
                     this.imageEventText.setDialogOption(OPTIONS[7], true);
@@ -241,7 +241,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                             group.addToTop(card);
                         }
                         AbstractDungeon.gridSelectScreen.open(group, 1, OPTIONS[8], false);
-                        AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(new Doubt(),
+                        AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(new AscendersBane(),
                                 (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
