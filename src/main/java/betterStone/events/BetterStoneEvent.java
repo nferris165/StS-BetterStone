@@ -66,10 +66,10 @@ public class BetterStoneEvent extends AbstractImageEvent {
         this.imageEventText.setDialogOption(OPTIONS[6]);
 
         if(AbstractDungeon.ascensionLevel >= 15){
-            healthLoss = (int) (0.2F * AbstractDungeon.player.maxHealth);
+            healthLoss = (int) (0.25F * AbstractDungeon.player.maxHealth);
         }
         else{
-            healthLoss = (int) (0.15F * AbstractDungeon.player.maxHealth);
+            healthLoss = (int) (0.2F * AbstractDungeon.player.maxHealth);
         }
     }
 
@@ -220,8 +220,6 @@ public class BetterStoneEvent extends AbstractImageEvent {
                 getRunInfo();
                 break;
             case INTRO_2:
-                memory = MEMORY_DEF_TEXT;
-
                 this.imageEventText.updateBodyText(memory);
                 switch(buttonPressed) {
                     case 0:
