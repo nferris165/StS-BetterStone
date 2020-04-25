@@ -28,7 +28,7 @@ public class EventSelectionPatch {
             if(AbstractDungeon.actNum == 1){
                 if(___tmpKey[0].equals(SensoryStone.ID) || ___tmpKey[0].equals(BetterStoneEvent.ID)){
                     roll = AbstractDungeon.eventRng.random(0.0F, 1.0F);
-                    odds = 0.25F;
+                    odds = 0.35F;
                     //EventTweaks.logger.info(roll +" / "+ odds + " \n ");
                     if(roll < odds){
                         return SpireReturn.Return(AbstractDungeon.getEvent(__rng));

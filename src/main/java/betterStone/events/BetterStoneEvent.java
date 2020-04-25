@@ -222,7 +222,6 @@ public class BetterStoneEvent extends AbstractImageEvent {
                     }
                 }
                 this.screen = CurScreen.INTRO_2;
-                getRunInfo();
                 break;
             case INTRO_2:
                 switch(buttonPressed) {
@@ -242,6 +241,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         this.imageEventText.updateBodyText(DESCRIPTIONS[7]);
                         this.screen = CurScreen.ACCEPT;
                         this.pickCard = true;
+                        getRunInfo();
                         CardGroup group = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
                         for(AbstractCard card: cards){
                             group.addToTop(card);
