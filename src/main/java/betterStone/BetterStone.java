@@ -16,6 +16,7 @@ import com.megacrit.cardcrawl.audio.Sfx;
 import com.megacrit.cardcrawl.audio.SoundMaster;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.TheBeyond;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.*;
 
@@ -234,7 +235,11 @@ public class BetterStone implements
         BaseMod.registerModBadge(badgeTexture, MODNAME, AUTHOR, DESCRIPTION, settingsPanel);
 
         //events
-        BaseMod.addEvent(BetterStoneEvent.ID, BetterStoneEvent.class);
+        if(BetterStone.actLimit){
+            BaseMod.addEvent(BetterStoneEvent.ID, BetterStoneEvent.class, TheBeyond.ID);
+        } else {
+            BaseMod.addEvent(BetterStoneEvent.ID, BetterStoneEvent.class);
+        }
 
         //audio
         loadAudio();
