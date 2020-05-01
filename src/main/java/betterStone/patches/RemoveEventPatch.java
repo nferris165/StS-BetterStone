@@ -16,7 +16,7 @@ public class RemoveEventPatch {
 
     public static void Prefix(AbstractDungeon dungeon_instance) {
         AbstractDungeon.eventList.remove(SensoryStone.ID);
-        if(BetterStone.actLimit){
+        if(BetterStone.actLimit && AbstractDungeon.eventList.contains(BetterStoneEvent.ID)){
             AbstractDungeon.eventList.remove(BetterStoneEvent.ID);
             BaseMod.addEvent(BetterStoneEvent.ID, BetterStoneEvent.class, TheBeyond.ID);
         }
