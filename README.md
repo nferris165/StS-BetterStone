@@ -20,7 +20,7 @@ Lastly, the mod contains a configuration option to limit the event to just Act 3
 
 ## Design Goals
 
-The normal event in useful because it is one of only  a rare few ways for the player to add colorless cards to their deck. Unfortunately, the end result for most players is to choose the option with no cost, and then skip the reward choice. This problem is the result of a few different causes.
+The normal event is useful because it is one of only a rare few ways for the player to add colorless cards to their deck. Unfortunately, the end result for most players is to choose the option with no cost, and then skip the reward choice. This problem is the result of a few different causes.
 
 First, colorless cards can vary wildly in usefulness depending on the class chosen and the type of deck being played. What this means is that often the colorless cards offered do not synergize with the deck being built, and there are at most only a couple that are generally useful across most or all decks.
 
