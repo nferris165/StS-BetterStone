@@ -44,6 +44,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
     private static final String MEMORY_3_TEXT;
     private static final String MEMORY_4_TEXT;
     private static final String MEMORY_DEF_TEXT;
+    private String eventChoice;
     private static int healthLoss;
     private CurScreen screen;
     private AbstractCard card, obtainCard = null;
@@ -52,6 +53,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
     private boolean pickCard;
     private ArrayList<AbstractCard> cards;
     public boolean remCard = false;
+    private List<String> cardsObtained;
 
     public BetterStoneEvent() {
         super(NAME, DESCRIPTIONS[0], IMG);
@@ -59,6 +61,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
         this.screen = CurScreen.INTRO;
         this.actNum = AbstractDungeon.actNum;
         this.noCardsInRewards = true;
+        this.cardsObtained = new ArrayList<>();
         classCard();
         this.choice = Math.min(this.actNum, 2);
         this.cards = new ArrayList<>();
@@ -227,18 +230,23 @@ public class BetterStoneEvent extends AbstractImageEvent {
                 switch(buttonPressed) {
                     case 0:
                         this.imageEventText.updateBodyText(randMem);
+                        this.eventChoice = "1";
                         this.reward(choice);
+                        logMetricHeal(ID, this.eventChoice, choice);
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 1:
                         this.imageEventText.updateBodyText(memory);
+                        this.eventChoice = "2";
                         this.screen = CurScreen.ACCEPT;
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.card, (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
                         AbstractDungeon.player.damage(new DamageInfo(AbstractDungeon.player, healthLoss, DamageInfo.DamageType.HP_LOSS));
+                        logMetricTakeDamage(ID, this.eventChoice, healthLoss);
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 2:
                         this.imageEventText.updateBodyText(DESCRIPTIONS[7]);
+                        this.eventChoice = "3";
                         this.screen = CurScreen.ACCEPT;
                         this.pickCard = true;
                         getRunInfo();
@@ -249,10 +257,14 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         AbstractDungeon.gridSelectScreen.open(group, 1, OPTIONS[8], false);
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(new AscendersBane(),
                                 (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
+                        logMetricObtainCards(ID, this.eventChoice, cardsObtained);
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 3:
                         this.imageEventText.updateBodyText(DESCRIPTIONS[8]);
+                        this.eventChoice = "4";
+                        this.cardsObtained.add(obtainCard.cardID);
+                        logMetricObtainCards(ID, this.eventChoice, cardsObtained);
                         this.screen = CurScreen.ACCEPT;
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(obtainCard,
                                 (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
@@ -310,6 +322,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
         super.update();
         if (this.pickCard && !AbstractDungeon.isScreenUp && !AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
             AbstractCard c = (AbstractDungeon.gridSelectScreen.selectedCards.get(0)).makeCopy();
+            this.cardsObtained.add(c.cardID);
             AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(c, (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
             AbstractDungeon.gridSelectScreen.selectedCards.clear();
         }
