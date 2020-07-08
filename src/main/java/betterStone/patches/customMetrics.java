@@ -11,6 +11,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.rooms.VictoryRoom;
 import com.megacrit.cardcrawl.screens.DeathScreen;
 
 import java.io.Serializable;
@@ -67,7 +68,8 @@ public class customMetrics implements Runnable {
 
     private void gatherAllData()
     {
-        Boolean death = Boolean.valueOf(AbstractDungeon.deathScreen.isVictory);
+        //Boolean death = AbstractDungeon.deathScreen.isVictory;
+        Boolean death = AbstractDungeon.getCurrRoom() instanceof VictoryRoom;
         addData("play_id", UUID.randomUUID().toString());
         addData("build_version", CardCrawlGame.TRUE_VERSION_NUM);
         addData("seed_played", Settings.seed.toString());

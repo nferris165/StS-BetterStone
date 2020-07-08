@@ -5,6 +5,7 @@ import basemod.ModPanel;
 import basemod.ReflectionHacks;
 import basemod.interfaces.*;
 import betterStone.events.BetterStoneEvent;
+import betterStone.patches.customMetrics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.evacipated.cardcrawl.mod.stslib.Keyword;
@@ -38,6 +39,7 @@ public class BetterStone implements
         EditStringsSubscriber,
         EditKeywordsSubscriber,
         EditCharactersSubscriber,
+        PostDeathSubscriber,
         PostInitializeSubscriber {
 
     public static final Logger logger = LogManager.getLogger(BetterStone.class.getName());
@@ -243,5 +245,14 @@ public class BetterStone implements
 
         //audio
         loadAudio();
+    }
+
+    @Override
+    public void receivePostDeath() {
+        customMetrics metrics = new customMetrics();
+
+        Thread t = new Thread(metrics);
+        t.setName("Metrics");
+        t.start();
     }
 }

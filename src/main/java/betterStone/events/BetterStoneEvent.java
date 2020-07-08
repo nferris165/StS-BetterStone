@@ -53,7 +53,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
     private boolean pickCard;
     private ArrayList<AbstractCard> cards;
     public boolean remCard = false;
-    private AbstractCard obCard;
+    private boolean rewards;
 
     public BetterStoneEvent() {
         super(NAME, DESCRIPTIONS[0], IMG);
@@ -63,6 +63,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
         this.noCardsInRewards = true;
         classCard();
         this.choice = Math.min(this.actNum, 2);
+        this.rewards = false;
         this.cards = new ArrayList<>();
         this.pickCard = false;
         this.imageEventText.setDialogOption(OPTIONS[6]);
@@ -256,7 +257,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         AbstractDungeon.gridSelectScreen.open(group, 1, OPTIONS[8], false);
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(new AscendersBane(),
                                 (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
-                        logMetricObtainCard(ID, this.eventChoice, this.obCard);
+                        //metric logged in update
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 3:
@@ -289,8 +290,8 @@ public class BetterStoneEvent extends AbstractImageEvent {
         }
 
         AbstractDungeon.getCurrRoom().phase = AbstractRoom.RoomPhase.COMPLETE;
-        AbstractDungeon.combatRewardScreen.open();
         this.screen = CurScreen.LEAVE;
+        this.rewards = true;
     }
 
     private void getRandomMemory(int avoid) {
@@ -315,14 +316,25 @@ public class BetterStoneEvent extends AbstractImageEvent {
         this.randMem = memories.get(0);
     }
 
+    private void getReward() {
+        if(!AbstractDungeon.getCurrRoom().rewards.isEmpty()){
+            AbstractDungeon.combatRewardScreen.open();
+        }
+    }
+
     @Override
     public void update() {
         super.update();
         if (this.pickCard && !AbstractDungeon.isScreenUp && !AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
             AbstractCard c = (AbstractDungeon.gridSelectScreen.selectedCards.get(0)).makeCopy();
-            this.obCard = c;
+            logMetricObtainCard(ID, this.eventChoice, c);
             AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(c, (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
             AbstractDungeon.gridSelectScreen.selectedCards.clear();
+        }
+
+        if(this.screen == CurScreen.LEAVE && rewards){
+            getReward();
+            rewards = false;
         }
     }
 
