@@ -132,6 +132,7 @@ public class customMetrics implements Runnable {
         //addData("event_choices", CardCrawlGame.metricData.event_choices);
         addData("act_limit", BetterStone.actLimit);
         addData("ascension_limit", !BetterStone.disableAscLimit);
+        addData("actNum", AbstractDungeon.actNum);
     }
 
     private HashMap getDeck(){

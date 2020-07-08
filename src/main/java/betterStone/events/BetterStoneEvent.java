@@ -53,7 +53,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
     private boolean pickCard;
     private ArrayList<AbstractCard> cards;
     public boolean remCard = false;
-    private List<String> cardsObtained;
+    private AbstractCard obCard;
 
     public BetterStoneEvent() {
         super(NAME, DESCRIPTIONS[0], IMG);
@@ -61,7 +61,6 @@ public class BetterStoneEvent extends AbstractImageEvent {
         this.screen = CurScreen.INTRO;
         this.actNum = AbstractDungeon.actNum;
         this.noCardsInRewards = true;
-        this.cardsObtained = new ArrayList<>();
         classCard();
         this.choice = Math.min(this.actNum, 2);
         this.cards = new ArrayList<>();
@@ -257,14 +256,13 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         AbstractDungeon.gridSelectScreen.open(group, 1, OPTIONS[8], false);
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(new AscendersBane(),
                                 (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
-                        logMetricObtainCards(ID, this.eventChoice, cardsObtained);
+                        logMetricObtainCard(ID, this.eventChoice, this.obCard);
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 3:
                         this.imageEventText.updateBodyText(DESCRIPTIONS[8]);
                         this.eventChoice = "4";
-                        this.cardsObtained.add(obtainCard.cardID);
-                        logMetricObtainCards(ID, this.eventChoice, cardsObtained);
+                        logMetricObtainCard(ID, this.eventChoice, obtainCard);
                         this.screen = CurScreen.ACCEPT;
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(obtainCard,
                                 (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
@@ -322,7 +320,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
         super.update();
         if (this.pickCard && !AbstractDungeon.isScreenUp && !AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
             AbstractCard c = (AbstractDungeon.gridSelectScreen.selectedCards.get(0)).makeCopy();
-            this.cardsObtained.add(c.cardID);
+            this.obCard = c;
             AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(c, (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
             AbstractDungeon.gridSelectScreen.selectedCards.clear();
         }
