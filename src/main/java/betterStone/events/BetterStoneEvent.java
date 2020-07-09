@@ -232,7 +232,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         this.imageEventText.updateBodyText(randMem);
                         this.eventChoice = "1";
                         this.reward(choice);
-                        logMetricHeal(ID, this.eventChoice, choice);
+                        logMetric(ID, this.eventChoice, (List)null, (List)null, (List)null, (List)null, (List)null, (List)null, (List)null, 0, 0, 0, 0, AbstractDungeon.actNum, 0);
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 1:
@@ -241,7 +241,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
                         this.screen = CurScreen.ACCEPT;
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(this.card, (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
                         AbstractDungeon.player.damage(new DamageInfo(AbstractDungeon.player, healthLoss, DamageInfo.DamageType.HP_LOSS));
-                        logMetricTakeDamage(ID, this.eventChoice, healthLoss);
+                        logMetric(ID, this.eventChoice, (List)null, (List)null, (List)null, (List)null, (List)null, (List)null, (List)null, 0, 0, healthLoss, 0, AbstractDungeon.actNum, 0);
                         this.imageEventText.updateDialogOption(0, OPTIONS[5]);
                         break;
                     case 2:
@@ -263,7 +263,9 @@ public class BetterStoneEvent extends AbstractImageEvent {
                     case 3:
                         this.imageEventText.updateBodyText(DESCRIPTIONS[8]);
                         this.eventChoice = "4";
-                        logMetricObtainCard(ID, this.eventChoice, obtainCard);
+                        List<String> tempList = new ArrayList<>();
+                        tempList.add(obtainCard.cardID);
+                        logMetric(ID, this.eventChoice, tempList, (List)null, (List)null, (List)null, (List)null, (List)null, (List)null, 0, 0, 0, 0, AbstractDungeon.actNum, 0);
                         this.screen = CurScreen.ACCEPT;
                         AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(obtainCard,
                                 (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
@@ -327,7 +329,9 @@ public class BetterStoneEvent extends AbstractImageEvent {
         super.update();
         if (this.pickCard && !AbstractDungeon.isScreenUp && !AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
             AbstractCard c = (AbstractDungeon.gridSelectScreen.selectedCards.get(0)).makeCopy();
-            logMetricObtainCard(ID, this.eventChoice, c);
+            List<String> tempList = new ArrayList<>();
+            tempList.add(c.cardID);
+            logMetric(ID, this.eventChoice, tempList, (List)null, (List)null, (List)null, (List)null, (List)null, (List)null, 0, 0, 0, 0, AbstractDungeon.actNum, 0);
             AbstractDungeon.effectList.add(new ShowCardAndObtainEffect(c, (float)Settings.WIDTH / 2.0F, (float)Settings.HEIGHT / 2.0F));
             AbstractDungeon.gridSelectScreen.selectedCards.clear();
         }
