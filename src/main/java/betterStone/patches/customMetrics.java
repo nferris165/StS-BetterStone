@@ -147,7 +147,12 @@ public class customMetrics implements Runnable {
             if(i != 0){
                 retVal.append("-|-");
             }
-            mod = StringUtils.substring(Loader.MODINFOS[i].Name, 0, 30);
+            if(Loader.MODINFOS[i].Name != null){
+                mod = StringUtils.substring(Loader.MODINFOS[i].Name, 0, 30);
+            }
+            else{
+                mod = " ";
+            }
             retVal.append(mod);
             if(retVal.length() >= 1950){
                 retVal.append("---MAX SIZE REACHED!!!");
