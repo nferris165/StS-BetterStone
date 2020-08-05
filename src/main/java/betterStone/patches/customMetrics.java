@@ -149,6 +149,8 @@ public class customMetrics implements Runnable {
             }
             if(Loader.MODINFOS[i].Name != null){
                 mod = StringUtils.substring(Loader.MODINFOS[i].Name, 0, 30);
+                mod = mod.replace("'", "");
+                mod = mod.replace("`", "");
             }
             else{
                 mod = " ";
