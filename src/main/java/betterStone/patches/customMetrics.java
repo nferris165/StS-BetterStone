@@ -12,8 +12,10 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.monsters.MonsterGroup;
 import com.megacrit.cardcrawl.rooms.VictoryRoom;
 import com.megacrit.cardcrawl.screens.DeathScreen;
+import com.megacrit.cardcrawl.screens.VictoryScreen;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -28,10 +30,18 @@ public class customMetrics implements Runnable {
     private Gson gson = new Gson();
     private long lastPlaytimeEnd;
     private boolean foundEvent = false;
+    public boolean death;
+    public boolean trueVictory;
+    public MonsterGroup monsters = null;
     public static final SimpleDateFormat timestampFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
 
     public static final String URL = "https://metricsanalysis.azurewebsites.net/metrics";
 
+    public void setValues(boolean death, boolean trueVictor, MonsterGroup monsters) {
+        this.death = death;
+        this.trueVictory = trueVictor;
+        this.monsters = monsters;
+    }
 
     private void addData(Object key, Object value)
     {
@@ -98,9 +108,13 @@ public class customMetrics implements Runnable {
 
         //addData("is_beta", Boolean.valueOf(Settings.isBeta));
         //addData("is_prod", Boolean.valueOf(Settings.isDemo));
-        addData("victory", Boolean.valueOf(death));
+        addData("victory", !death);
         addData("floor_reached", Integer.valueOf(AbstractDungeon.floorNum));
-        addData("score", Integer.valueOf(DeathScreen.calcScore(!death)));
+        if (this.trueVictory) {
+            this.addData("score", VictoryScreen.calcScore(!death));
+        } else {
+            this.addData("score", DeathScreen.calcScore(!death));
+        }
         this.lastPlaytimeEnd = (System.currentTimeMillis() / 1000L);
         addData("timestamp", Long.valueOf(this.lastPlaytimeEnd));
         //addData("local_time", timestampFormatter.format(Calendar.getInstance().getTime()));
@@ -132,6 +146,11 @@ public class customMetrics implements Runnable {
 
         addData("character_chosen", AbstractDungeon.player.chosenClass.name());
 
+        if (death && monsters != null) {
+            this.addData("killed_by", AbstractDungeon.lastCombatMetricKey);
+        } else {
+            this.addData("killed_by", null);
+        }
 
         //addData("event_choices", CardCrawlGame.metricData.event_choices);
         addData("act_limit", BetterStone.actLimit);
