@@ -170,6 +170,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
             for(int i = 0; i < upgrades; ++i) {
                 card.upgrade();
             }
+            //BetterStone.logger.info(cardID + ": " + card.upgraded + " " + upgrades);
             return card;
         }
     }
@@ -328,7 +329,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
     public void update() {
         super.update();
         if (this.pickCard && !AbstractDungeon.isScreenUp && !AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
-            AbstractCard c = (AbstractDungeon.gridSelectScreen.selectedCards.get(0)).makeCopy();
+            AbstractCard c = (AbstractDungeon.gridSelectScreen.selectedCards.get(0)).makeStatEquivalentCopy();
             List<String> tempList = new ArrayList<>();
             tempList.add(c.cardID);
             logMetric(ID, this.eventChoice, tempList, (List)null, (List)null, (List)null, (List)null, (List)null, (List)null, 0, 0, 0, 0, AbstractDungeon.actNum, 0);
