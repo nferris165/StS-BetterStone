@@ -159,31 +159,42 @@ public class BetterStone implements
     public void receiveEditRelics() {
 
     }
+    private static String getLanguageString() {
+        switch (Settings.language) {
+//            case ZHS:
+//                return "zhs";
+            default:
+                return "eng";
+        }
+    }
 
     @Override
     public void receiveEditStrings() {
+        // Get Localization
+        String language = getLanguageString();
+
         BaseMod.loadCustomStringsFile(CardStrings.class,
-                modID + "Resources/localization/eng/Card-Strings.json");
+                modID + "Resources/localization/" + language + "/Card-Strings.json");
         BaseMod.loadCustomStringsFile(CharacterStrings.class,
-                modID + "Resources/localization/eng/Character-Strings.json");
+                modID + "Resources/localization/" + language + "/Character-Strings.json");
         BaseMod.loadCustomStringsFile(EventStrings.class,
-                modID + "Resources/localization/eng/Event-Strings.json");
+                modID + "Resources/localization/" + language + "/Event-Strings.json");
         BaseMod.loadCustomStringsFile(MonsterStrings.class,
-                modID + "Resources/localization/eng/Monster-Strings.json");
+                modID + "Resources/localization/" + language + "/Monster-Strings.json");
         BaseMod.loadCustomStringsFile(OrbStrings.class,
-                modID + "Resources/localization/eng/Orb-Strings.json");
+                modID + "Resources/localization/" + language + "/Orb-Strings.json");
         BaseMod.loadCustomStringsFile(PotionStrings.class,
-                modID + "Resources/localization/eng/Potion-Strings.json");
+                modID + "Resources/localization/" + language + "/Potion-Strings.json");
         BaseMod.loadCustomStringsFile(PowerStrings.class,
-                modID + "Resources/localization/eng/Power-Strings.json");
+                modID + "Resources/localization/" + language + "/Power-Strings.json");
         BaseMod.loadCustomStringsFile(RelicStrings.class,
-                modID + "Resources/localization/eng/Relic-Strings.json");
+                modID + "Resources/localization/" + language + "/Relic-Strings.json");
         BaseMod.loadCustomStringsFile(UIStrings.class,
-                modID + "Resources/localization/eng/UI-Strings.json");
+                modID + "Resources/localization/" + language + "/UI-Strings.json");
     }
 
     private void loadAudio() {
-        HashMap<String, Sfx> map = (HashMap<String, Sfx>) ReflectionHacks.getPrivate(CardCrawlGame.sound, SoundMaster.class, "map");
+        HashMap<String, Sfx> map = ReflectionHacks.getPrivate(CardCrawlGame.sound, SoundMaster.class, "map");
         //map.put("Pop", new Sfx(AUDIO_PATH + "pop.ogg", false));
     }
 
@@ -193,10 +204,11 @@ public class BetterStone implements
 
     @Override
     public void receivePostInitialize() {
+        UIStrings configStrings = CardCrawlGame.languagePack.getUIString(makeID("ConfigMenuText"));
         Texture badgeTexture = TextureLoader.getTexture(BADGE_IMAGE);
         ModPanel settingsPanel = new ModPanel();
 
-        ModLabeledToggleButton ascLimitButton = new ModLabeledToggleButton("Enables Better Note interaction for all ascension levels.",
+        ModLabeledToggleButton ascLimitButton = new ModLabeledToggleButton(configStrings.TEXT[0],
                 350.0f, 750.0f, Settings.CREAM_COLOR, FontHelper.charDescFont,
                 disableAscLimit,
                 settingsPanel,
@@ -213,7 +225,7 @@ public class BetterStone implements
                     }
                 });
 
-        ModLabeledToggleButton actLimitButton = new ModLabeledToggleButton("Limits Better Stone event to Act 3.",
+        ModLabeledToggleButton actLimitButton = new ModLabeledToggleButton(configStrings.TEXT[1],
                 350.0f, 700.0f, Settings.CREAM_COLOR, FontHelper.charDescFont,
                 actLimit,
                 settingsPanel,

@@ -1,3 +1,8 @@
 {
-
+  "betterStone:ConfigMenuText": {
+    "TEXT": [
+      "Enables Better Note interaction for all ascension levels.",
+      "Limits Better Stone event to Act 3."
+    ]
+  }
 }
