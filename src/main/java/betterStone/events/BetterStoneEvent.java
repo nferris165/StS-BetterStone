@@ -115,7 +115,7 @@ public class BetterStoneEvent extends AbstractImageEvent {
 
     private void getRunInfo(){
         CardCrawlGame.mainMenuScreen.runHistoryScreen.refreshData();
-        ArrayList<RunData> runList = (ArrayList<RunData>) ReflectionHacks.getPrivate(
+        ArrayList<RunData> runList = ReflectionHacks.getPrivate(
                 CardCrawlGame.mainMenuScreen.runHistoryScreen, RunHistoryScreen.class, "unfilteredRuns");
         for(RunData run: runList){
             if(run.character_chosen.equals(AbstractDungeon.player.chosenClass.name())){

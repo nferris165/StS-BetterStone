@@ -161,8 +161,8 @@ public class BetterStone implements
     }
     private static String getLanguageString() {
         switch (Settings.language) {
-//            case ZHS:
-//                return "zhs";
+            case ZHS:
+                return "zhs";
             default:
                 return "eng";
         }

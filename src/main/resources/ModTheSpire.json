@@ -4,6 +4,7 @@
   "author_list": ["Nichilas"],
   "description": "A Better Sensory Stone.",
   "version": "${project.version}",
+  "credits": "ZHS translation - 旅渚Lastcel\n",
   "sts_version": "${SlayTheSpire.version}",
   "mts_version": "${ModTheSpire.version}",
   "dependencies": ["basemod", "stslib"],
